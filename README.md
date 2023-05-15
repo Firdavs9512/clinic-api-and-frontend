@@ -13,7 +13,7 @@ git clone https://github.com/firdavs9512/clinic-api-and-frontend.git
 2. Install dependencies
 
 ```
-cd <your-repo>
+cd clinic-api-and-frontend
 composer install
 npm install
 ```
@@ -52,7 +52,13 @@ DB_PASSWORD=your_database_password
 php artisan migrate --seed
 ```
 
-6. Compile frontend assets
+6. Install node js packages
+
+```
+npm install
+```
+
+7. Compile frontend assets
 
 ```
 npm run dev
