@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.active_menu {
+  @apply bg-[#722ED1] bg-opacity-50 border-l-4;
+}
