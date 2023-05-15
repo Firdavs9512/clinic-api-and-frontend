@@ -1,6 +1,8 @@
-# Laravel API Project
+# Clinic API Project
 
-This project is a Laravel API built using Laravel Sail/Docker and a ReactJS frontend.
+This project is a Clinic API built using Laravel Sail/Docker and a ReactJS frontend.
+
+Api documentation using postman [Postman docs](https://documenter.getpostman.com/view/24199724/2s93eePoQc)
 
 ## Installation
 
