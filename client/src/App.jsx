@@ -16,6 +16,7 @@ import Logout from "./dashboard/Logout";
 import Doctors from "./dashboard/Doctors";
 import Clinics from "./dashboard/Clinics";
 import Settings from "./dashboard/Settings";
+import RoleRoute from "./Context/RoleRoute";
 
 const App = () => {
   return (

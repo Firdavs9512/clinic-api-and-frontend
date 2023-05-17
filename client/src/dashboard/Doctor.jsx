@@ -12,7 +12,7 @@ const Doctor = () => {
   const { id } = useParams();
   const [doctor, setDoctor] = useState([]);
   const [times, setTimes] = useState([]);
-  const { token, setIsLoading } = useAuth();
+  const { token, user, setIsLoading } = useAuth();
   const [select, setSelect] = useState();
   const [payment, setPayment] = useState("cash");
   const [open, setOpen] = useState(false);
@@ -336,12 +336,14 @@ const Doctor = () => {
               <option value="cash">Cash payment</option>
               <option value="webmoney">Webmoney payment</option>
             </select>
-            <button
-              onClick={sendOrder}
-              className="py-2 bg-[#461890] text-lg font-medium text-white rounded-full mb-2 mt-5"
-            >
-              Confirm order
-            </button>
+            {JSON.parse(user).role === "user" && (
+              <button
+                onClick={sendOrder}
+                className="py-2 bg-[#461890] text-lg font-medium text-white rounded-full mb-2 mt-5"
+              >
+                Confirm order
+              </button>
+            )}
           </div>
         </div>
       </div>

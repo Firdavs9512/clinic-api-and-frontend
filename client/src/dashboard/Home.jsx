@@ -234,7 +234,7 @@ const Home = () => {
 
                 {!data.data?.length && (
                   <tr>
-                    <td colSpan={6}>
+                    <td colSpan={8}>
                       <div className="w-full flex justify-center">
                         You have no created lists!
                       </div>

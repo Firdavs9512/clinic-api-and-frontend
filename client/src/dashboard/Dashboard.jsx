@@ -6,34 +6,6 @@ import axios from "axios";
 import { useAuth } from "../Context/AuthProvider";
 import DoctorCard from "./components/DoctorCard";
 
-const Doctors = () => {
-  return (
-    <>
-      <div className="flex flex-col bg-[#23075E] text-white mt-6 rounded-xl p-6">
-        <div className="flex flex-row w-full items-center justify-between mb-3">
-          <h3 className="text-2xl font-semibold">Doctors</h3>
-          <Link className="text-gray-50 hover:text-violet-400 transition-colors">
-            Get all
-          </Link>
-        </div>
-        <div className="flex flex-wrap gap-5">
-          <ClinicCard />
-          <ClinicCard />
-          <ClinicCard />
-          <ClinicCard />
-          <ClinicCard />
-          <ClinicCard />
-          <ClinicCard />
-          <ClinicCard />
-          <ClinicCard />
-          <ClinicCard />
-          <ClinicCard />
-          <ClinicCard />
-        </div>
-      </div>
-    </>
-  );
-};
 
 const Dashboard = () => {
   const [clinics, setClinics] = useState([]);
