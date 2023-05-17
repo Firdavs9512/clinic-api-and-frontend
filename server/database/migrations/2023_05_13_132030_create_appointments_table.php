@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreign('doctor_id')->references('id')->on('doctors')->onDelete('cascade');
             $table->date('date');
             $table->time('time');
-            $table->enum('status', ['booked', 'cancelled', 'completed']);
+            $table->enum('status', ['booked', 'cancelled', 'completed','pending']);
             $table->timestamps();
         });
     }

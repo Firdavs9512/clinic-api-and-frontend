@@ -16,14 +16,15 @@ class DoctorSeeder extends Seeder
      */
     public function run(): void
     {
-        $doctors = User::where('role','doctor')->pluck('id')->toArray();
+        $doctors = User::where('role', 'doctor')->pluck('id')->toArray();
 
         foreach ($doctors as $id) {
             $clinic = Clinic::inRandomOrder()->first();
             Doctor::create([
                 'user_id' => $id,
                 'clinic_id' => $clinic->id,
-                'images' => Str::random(10)
+                'images' => Str::random(10),
+                'payment' => random_int(10, 100),
             ]);
         }
     }

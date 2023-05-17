@@ -1,5 +1,5 @@
 import React from "react";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./Context/AuthProvider";
 import DashboardTemplate from "./dashboard/DashboardTemplate";
@@ -15,6 +15,7 @@ import Home from "./dashboard/Home";
 import Logout from "./dashboard/Logout";
 import Doctors from "./dashboard/Doctors";
 import Clinics from "./dashboard/Clinics";
+import Settings from "./dashboard/Settings";
 
 const App = () => {
   return (
@@ -36,7 +37,8 @@ const App = () => {
             <Route path="doctor/:id" element={<Doctor />} />
             <Route path="clinics" element={<Clinics />} />
             <Route path="doctors" element={<Doctors />} />
-            <Route path="home" element={<Home/>} />
+            <Route path="home" element={<Home />} />
+            <Route path="settings" element={<Settings />} />
           </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />

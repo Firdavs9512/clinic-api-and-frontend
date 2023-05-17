@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('clinic_id');
             $table->foreign('clinic_id')->references('id')->on('clinics')->onDelete('cascade');
             $table->string('images')->nullable();
+            $table->float('payment')->default(10.0);
             // $table->enum('day', ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']);
             $table->timestamps();
         });

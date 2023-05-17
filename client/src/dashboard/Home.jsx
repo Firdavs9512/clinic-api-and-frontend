@@ -6,6 +6,7 @@ import axios from "axios";
 import { Dialog, Transition } from "@headlessui/react";
 import { ArrowPathIcon } from "@heroicons/react/24/solid";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const { user, token, setIsLoading } = useAuth();
@@ -160,6 +161,12 @@ const Home = () => {
                     Doctor name
                   </th>
                   <th scope="col" class="px-6 py-3">
+                    Payment type
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                    Payment status
+                  </th>
+                  <th scope="col" class="px-6 py-3">
                     Date
                   </th>
                   <th scope="col" class="px-6 py-3">
@@ -181,8 +188,27 @@ const Home = () => {
                       scope="row"
                       class="px-6 py-4 font-medium whitespace-nowrap text-white"
                     >
-                      {item.doctor_name}
+                      <Link to={`/dashboard/doctor/${item.doctor_id}`} className="cursor-pointer">{item.doctor_name}</Link>
+                      
                     </th>
+                    <td class="px-6 py-4 capitalize">{item.type}</td>
+                    <td class="px-6 py-4">
+                      {item.payment_status === "success" && (
+                        <div className="bg-lime-500 text-white flex font-semibold justify-center rounded-2xl">
+                          {item.payment_status}
+                        </div>
+                      )}
+                      {item.payment_status === "pending" && (
+                        <div className="bg-amber-500 text-white flex font-semibold justify-center rounded-2xl">
+                          {item.payment_status}
+                        </div>
+                      )}
+                      {item.payment_status === "error" && (
+                        <div className="bg-red-500 text-white flex font-semibold justify-center rounded-2xl">
+                          faild
+                        </div>
+                      )}
+                    </td>
                     <td class="px-6 py-4">{item.date}</td>
                     <td class="px-6 py-4">{item.time.replace(/:00$/, "")}</td>
                     <td class="px-6 py-4">{item.status}</td>

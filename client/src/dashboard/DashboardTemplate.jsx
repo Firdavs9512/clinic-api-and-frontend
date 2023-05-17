@@ -70,10 +70,20 @@ const DashboardTemplate = () => {
           <div className="border-[#722ED1] border-b-2 mx-5 mt-10"></div>
           <nav className="mt-5">
             <ul className="mb-8">
-              <li>
-                <Link className="text-xl hover:bg-[#722ED1] hover:bg-opacity-50 hover:border-l-4 transition-transform duration-300 py-2 pl-10 flex items-center gap-3 text-white">
-                  <Cog6ToothIcon className="w-7 h-7 text-white" /> Settings
-                </Link>
+            <li>
+                <NavLink
+                  to={"/dashboard/settings"}
+                  className={({ isActive, isPending }) =>
+                    isPending
+                      ? "pending"
+                      : isActive
+                      ? "text-xl active_menu hover:bg-[#722ED1] hover:bg-opacity-50 hover:border-l-4 transition-transform duration-300 py-2 pl-10 flex items-center gap-3 text-white"
+                      : "text-xl pl-10 hover:bg-[#722ED1] hover:bg-opacity-50 hover:border-l-4 transition-transform duration-300 flex items-center py-2 gap-3 text-white"
+                  }
+                  end
+                >
+                   <Cog6ToothIcon className="w-7 h-7 text-white" /> Settings
+                </NavLink>
               </li>
               <li>
                 <Link to={'/logout'} className="text-xl pl-10 hover:bg-[#722ED1] hover:bg-opacity-50 hover:border-l-4 transition-transform duration-300 flex items-center py-2 gap-3 text-white">

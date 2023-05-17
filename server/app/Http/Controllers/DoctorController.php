@@ -10,8 +10,6 @@ class DoctorController extends Controller
 {
     public function index(Request $request)
     {
-        // $doctors = Doctor::with(['user'])->paginate(is_numeric($request['count']) ? $request['count'] : 10);
-
         $doctors = Doctor::select('doctors.id', 'clinics.opening_time', 'clinics.closing_time', 'users.name as doctor_name', 'images', 'clinics.opening_time', 'clinics.closing_time')
             ->join('users', 'doctors.user_id', '=', 'users.id')
             ->join('clinics', 'doctors.clinic_id', '=', 'clinics.id')
@@ -24,7 +22,8 @@ class DoctorController extends Controller
 
     public function show(Request $request, $id)
     {
-        $doctor =  DB::table('doctors')->select('doctors.id', 'doctors.images', DB::raw('users.name as doctor_name'), DB::raw('clinics.name as clinic_name'))
+        $doctor =  DB::table('doctors')->select('doctors.id', 'doctors.images', DB::raw('users.name as doctor_name'),
+        DB::raw('clinics.name as clinic_name, clinics.id as clinic_id'), DB::raw('doctors.payment'))
             ->join('users', 'doctors.user_id', 'users.id')
             ->leftJoin('appointments', 'doctors.id', '=', 'appointments.doctor_id')
             ->join('clinics', 'doctors.clinic_id', 'clinics.id')

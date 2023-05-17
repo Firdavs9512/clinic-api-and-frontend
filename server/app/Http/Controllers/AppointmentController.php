@@ -6,6 +6,7 @@ use App\Helper\Times;
 use App\Http\Requests\Appointment as RequestsAppointment;
 use App\Models\Appointment;
 use App\Models\Doctor;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -15,7 +16,12 @@ class AppointmentController extends Controller
     public function story(RequestsAppointment $request)
     {
 
-        $old = Appointment::where('doctor_id', $request['doctor'])->where('date', $request['date'])->where('time', $request['time'])->first();
+        $old = Appointment::where('appointments.doctor_id', $request['doctor'])
+            ->join('payments','appointments.id','payments.appointment_id')
+            ->where('payments.status','<>','pending')
+            ->where('appointments.status','<>','cancelled')
+            ->where('appointments.date', $request['date'])
+            ->where('appointments.time', $request['time'])->first();
 
         if (!empty($old)) {
             return response()->json([
@@ -29,11 +35,19 @@ class AppointmentController extends Controller
             'doctor_id' => $request['doctor'],
             'date' => $request['date'],
             'time' => $request['time'],
-            'status' => 'booked',
+            'status' => $request['type'] === 'cash' ? 'booked' : 'pending',
+        ]);
+
+        $payment = Payment::create([
+            'user_id' => $request->user()->id,
+            'appointment_id' => $appointment->id,
+            'type' => $request['type'],
+            'status' => $request['type'] === 'cash' ? 'success' : 'pending',
         ]);
 
         return response()->json([
             'status' => true,
+            'payment_id' => $payment->id,
             'message' => 'You have been successfully registered. Your id: ' . $appointment->id
         ]);
     }
@@ -43,8 +57,10 @@ class AppointmentController extends Controller
         $appointments = DB::table('appointments')
             ->join('doctors', 'appointments.doctor_id', '=', 'doctors.id')
             ->join('users', 'doctors.user_id', '=', 'users.id')
+            ->join('payments', 'appointments.id', '=', 'payments.appointment_id')
             ->where('appointments.user_id', '=', $request->user()->id)
-            ->select('appointments.id', DB::raw("CONCAT(users.name) AS doctor_name"), 'appointments.time', 'appointments.date', 'appointments.status')
+            ->where('appointments.status', '<>', 'pending')
+            ->select('appointments.id', DB::raw("CONCAT(users.name) AS doctor_name, doctors.id as doctor_id"), 'appointments.time', 'appointments.date', 'appointments.status', 'payments.type', 'payments.status as payment_status')
             ->orderBy('appointments.created_at', 'desc')
             ->paginate(10);
         return response()->json($appointments);
@@ -64,7 +80,13 @@ class AppointmentController extends Controller
 
     public function daily(Request $request)
     {
-        $appointments = Appointment::where('date', $request['date'])->where('doctor_id', $request['doctor'])->where('status','<>', 'completed')->select(DB::raw('TIME_FORMAT(time, "%H:%i") as time'))->get();
+        $appointments = Appointment::where('appointments.date', $request['date'])
+            ->join('payments', 'appointments.id', 'payments.appointment_id')
+            ->where('appointments.doctor_id', $request['doctor'])
+            ->where('appointments.status', '<>', 'cancelled')
+            ->where('payments.status', '<>','pending')
+            ->select(DB::raw('TIME_FORMAT(appointments.time, "%H:%i") as time'))
+            ->get();
 
         $results = [];
 

@@ -25,6 +25,7 @@ class Appointment extends FormRequest
             "doctor" => 'required|exists:doctors,id',
             "date" => 'required|date|after_or_equal:today',
             "time" => 'required|date_format:H:i',
+            "type" => 'required|in:cash,webmoney'
         ];
     }
 }
