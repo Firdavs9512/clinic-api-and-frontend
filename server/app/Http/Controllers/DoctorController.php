@@ -5,9 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\Doctor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Elasticsearch\Client;
 
 class DoctorController extends Controller
 {
+
+    protected $elasticsearch;
+
+    public function __construct(Client $elasticsearch)
+    {
+        $this->elasticsearch = $elasticsearch;
+    }
+
     public function index(Request $request)
     {
         $doctors = Doctor::select('doctors.id', 'clinics.opening_time', 'clinics.closing_time', 'users.name as doctor_name', 'images', 'clinics.opening_time', 'clinics.closing_time')
@@ -22,8 +31,13 @@ class DoctorController extends Controller
 
     public function show(Request $request, $id)
     {
-        $doctor =  DB::table('doctors')->select('doctors.id', 'doctors.images', DB::raw('users.name as doctor_name'),
-        DB::raw('clinics.name as clinic_name, clinics.id as clinic_id'), DB::raw('doctors.payment'))
+        $doctor =  DB::table('doctors')->select(
+            'doctors.id',
+            'doctors.images',
+            DB::raw('users.name as doctor_name'),
+            DB::raw('clinics.name as clinic_name, clinics.id as clinic_id'),
+            DB::raw('doctors.payment')
+        )
             ->join('users', 'doctors.user_id', 'users.id')
             ->leftJoin('appointments', 'doctors.id', '=', 'appointments.doctor_id')
             ->join('clinics', 'doctors.clinic_id', 'clinics.id')
@@ -34,4 +48,26 @@ class DoctorController extends Controller
 
         return response()->json($doctor);
     }
+
+    public function search(Request $request)
+    {
+        $query = '';
+        $params = [
+            'index' => 'doctors',
+            'body' => [
+                'query' => [
+                    'multi_match' => [
+                        'query' => $query,
+                        'fields' => ['name', 'clinic_name'],
+                    ],
+                ],
+            ],
+        ];
+
+
+        $results = $this->elasticsearch->search($params);
+        return $results;
+    }
+
+
 }

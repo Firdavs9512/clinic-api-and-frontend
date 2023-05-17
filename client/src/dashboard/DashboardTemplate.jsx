@@ -6,6 +6,7 @@ import {
   Cog6ToothIcon,
   HomeIcon,
   PhoneIcon,
+  PlusIcon,
   Squares2X2Icon,
   UserGroupIcon,
 } from "@heroicons/react/24/solid";
@@ -22,7 +23,7 @@ const DashboardTemplate = () => {
       <div className="w-full min-h-screen flex">
         <div className="bg-[#23075E] min-h-screen w-1/5 fixed">
           <img src={logo} alt="Logo" className="mx-auto mt-8" />
-          <ToastContainer/>
+          <ToastContainer />
           <div className="border-[#722ED1] border-b-2 mx-5 mt-10"></div>
           <nav className="mt-5">
             <ul className="mb-8">
@@ -65,12 +66,29 @@ const DashboardTemplate = () => {
                   <PhoneIcon className="w-7 h-7 text-white" /> Contact
                 </Link>
               </li>
+              {JSON.parse(user)?.role === "clinic" && (
+                <li>
+                  <NavLink
+                    to={"/dashboard/add-doctor"}
+                    className={({ isActive, isPending }) =>
+                      isPending
+                        ? "pending"
+                        : isActive
+                        ? "text-xl active_menu hover:bg-[#722ED1] hover:bg-opacity-50 hover:border-l-4 transition-transform duration-300 py-2 pl-10 flex items-center gap-3 text-white"
+                        : "text-xl pl-10 hover:bg-[#722ED1] hover:bg-opacity-50 hover:border-l-4 transition-transform duration-300 flex items-center py-2 gap-3 text-white"
+                    }
+                    end
+                  >
+                    <PlusIcon className="w-7 h-7 text-white" /> Add doctor
+                  </NavLink>
+                </li>
+              )}
             </ul>
           </nav>
           <div className="border-[#722ED1] border-b-2 mx-5 mt-10"></div>
           <nav className="mt-5">
             <ul className="mb-8">
-            <li>
+              <li>
                 <NavLink
                   to={"/dashboard/settings"}
                   className={({ isActive, isPending }) =>
@@ -82,11 +100,14 @@ const DashboardTemplate = () => {
                   }
                   end
                 >
-                   <Cog6ToothIcon className="w-7 h-7 text-white" /> Settings
+                  <Cog6ToothIcon className="w-7 h-7 text-white" /> Settings
                 </NavLink>
               </li>
               <li>
-                <Link to={'/logout'} className="text-xl pl-10 hover:bg-[#722ED1] hover:bg-opacity-50 hover:border-l-4 transition-transform duration-300 flex items-center py-2 gap-3 text-white">
+                <Link
+                  to={"/logout"}
+                  className="text-xl pl-10 hover:bg-[#722ED1] hover:bg-opacity-50 hover:border-l-4 transition-transform duration-300 flex items-center py-2 gap-3 text-white"
+                >
                   <ArrowLeftOnRectangleIcon className="w-7 h-7 text-white" />{" "}
                   Log out
                 </Link>

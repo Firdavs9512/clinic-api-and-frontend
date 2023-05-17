@@ -16,6 +16,7 @@ import Logout from "./dashboard/Logout";
 import Doctors from "./dashboard/Doctors";
 import Clinics from "./dashboard/Clinics";
 import Settings from "./dashboard/Settings";
+import AddDoctor from "./dashboard/AddDoctor";
 import RoleRoute from "./Context/RoleRoute";
 
 const App = () => {
@@ -40,6 +41,7 @@ const App = () => {
             <Route path="doctors" element={<Doctors />} />
             <Route path="home" element={<Home />} />
             <Route path="settings" element={<Settings />} />
+            <Route path="add-doctor" element={<RoleRoute roles={'clinic'} ><AddDoctor /></RoleRoute>}/>
           </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />

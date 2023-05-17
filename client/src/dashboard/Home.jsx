@@ -158,26 +158,41 @@ const Home = () => {
                     #
                   </th>
                   <th scope="col" class="px-6 py-3">
-                    Doctor name
+                    {JSON.parse(user).role !== "doctor" && "Doctor name"}
+                    {JSON.parse(user).role === "doctor" && "User name"}
                   </th>
-                  <th scope="col" class="px-6 py-3">
-                    Payment type
-                  </th>
-                  <th scope="col" class="px-6 py-3">
-                    Payment status
-                  </th>
-                  <th scope="col" class="px-6 py-3">
-                    Date
-                  </th>
-                  <th scope="col" class="px-6 py-3">
-                    Time
-                  </th>
-                  <th scope="col" class="px-6 py-3">
-                    Status
-                  </th>
-                  <th scope="col" class="px-6 py-3">
-                    Action
-                  </th>
+                  {JSON.parse(user).role !== "clinic" && (
+                    <>
+                      <th scope="col" class="px-6 py-3">
+                        Payment type
+                      </th>
+                      <th scope="col" class="px-6 py-3">
+                        Payment status
+                      </th>
+                      <th scope="col" class="px-6 py-3">
+                        Date
+                      </th>
+                      <th scope="col" class="px-6 py-3">
+                        Time
+                      </th>
+                      <th scope="col" class="px-6 py-3">
+                        Status
+                      </th>
+                      <th scope="col" class="px-6 py-3">
+                        Action
+                      </th>
+                    </>
+                  )}
+                  {JSON.parse(user).role === "clinic" && (
+                    <>
+                      <th scope="col" class="px-6 py-3">
+                        Total orders
+                      </th>
+                      <th scope="col" class="px-6 py-3">
+                        Total payments
+                      </th>
+                    </>
+                  )}
                 </tr>
               </thead>
               <tbody>
@@ -188,47 +203,70 @@ const Home = () => {
                       scope="row"
                       class="px-6 py-4 font-medium whitespace-nowrap text-white"
                     >
-                      <Link to={`/dashboard/doctor/${item.doctor_id}`} className="cursor-pointer">{item.doctor_name}</Link>
-                      
-                    </th>
-                    <td class="px-6 py-4 capitalize">{item.type}</td>
-                    <td class="px-6 py-4">
-                      {item.payment_status === "success" && (
-                        <div className="bg-lime-500 text-white flex font-semibold justify-center rounded-2xl">
-                          {item.payment_status}
-                        </div>
-                      )}
-                      {item.payment_status === "pending" && (
-                        <div className="bg-amber-500 text-white flex font-semibold justify-center rounded-2xl">
-                          {item.payment_status}
-                        </div>
-                      )}
-                      {item.payment_status === "error" && (
-                        <div className="bg-red-500 text-white flex font-semibold justify-center rounded-2xl">
-                          faild
-                        </div>
-                      )}
-                    </td>
-                    <td class="px-6 py-4">{item.date}</td>
-                    <td class="px-6 py-4">{item.time.replace(/:00$/, "")}</td>
-                    <td class="px-6 py-4">{item.status}</td>
-                    <td class="px-6 py-4">
-                      {item.status === "cancelled" ? (
-                        <button className="font-medium text-gray-500">
-                          Cancelled
-                        </button>
-                      ) : (
-                        <button
-                          onClick={() => {
-                            setSelectDate(item.id);
-                            setOpen(true);
-                          }}
-                          class="font-medium  text-blue-500 hover:underline"
+                      {JSON.parse(user).role === "user" ||
+                      JSON.parse(user).role === "clinic" ? (
+                        <Link
+                          to={`/dashboard/doctor/${item.doctor_id}`}
+                          className="cursor-pointer"
                         >
-                          Cancel
-                        </button>
+                          {item.doctor_name}
+                        </Link>
+                      ) : (
+                        <></>
                       )}
-                    </td>
+                      {JSON.parse(user).role === "doctor" && item.doctor_name}
+                    </th>
+                    {JSON.parse(user).role !== "clinic" && (
+                      <>
+                        <td class="px-6 py-4 capitalize">{item.type}</td>
+                        <td class="px-6 py-4">
+                          {item.payment_status === "success" && (
+                            <div className="bg-lime-500 text-white flex font-semibold justify-center rounded-2xl">
+                              {item.payment_status}
+                            </div>
+                          )}
+                          {item.payment_status === "pending" && (
+                            <div className="bg-amber-500 text-white flex font-semibold justify-center rounded-2xl">
+                              {item.payment_status}
+                            </div>
+                          )}
+                          {item.payment_status === "error" && (
+                            <div className="bg-red-500 text-white flex font-semibold justify-center rounded-2xl">
+                              faild
+                            </div>
+                          )}
+                        </td>
+                        <td class="px-6 py-4">{item.date}</td>
+                        <td class="px-6 py-4">
+                          {item.time?.replace(/:00$/, "")}
+                        </td>
+                        <td class="px-6 py-4">{item.status}</td>
+                        <td class="px-6 py-4">
+                          {item.status === "cancelled" ? (
+                            <button className="font-medium text-gray-500">
+                              Cancelled
+                            </button>
+                          ) : (
+                            <button
+                              onClick={() => {
+                                setSelectDate(item.id);
+                                setOpen(true);
+                              }}
+                              class="font-medium  text-blue-500 hover:underline"
+                            >
+                              Cancel
+                            </button>
+                          )}
+                        </td>
+                      </>
+                    )}
+
+                    {JSON.parse(user).role === "clinic" && (
+                      <>
+                        <td class="px-6 py-4">{item.orders}</td>
+                        <td class="px-6 py-4">{item.payments}$</td>
+                      </>
+                    )}
                   </tr>
                 ))}
 
